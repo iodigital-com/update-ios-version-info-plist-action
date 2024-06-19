@@ -20,6 +20,9 @@ async function main(): Promise<void> {
 
         let bundleShortVersionString: string = core.getInput('bundle-short-version-string');
         let bundleVersion: string = core.getInput('bundle-version');
+        let appId: string = core.getInput('app-id');
+        let bundleDisplayName: string = core.getInput('bundle-display-name');
+        let fullVersionName: string = "";
 
         if (printFile) {
             core.info('Before update:');
@@ -33,10 +36,25 @@ async function main(): Promise<void> {
         if (bundleShortVersionString) {
             core.info(`Overriding CFBundleShortVersionString: ${bundleShortVersionString}`);
             obj['CFBundleShortVersionString'] = bundleShortVersionString;
+        } else {
+            bundleShortVersionString = obj['CFBundleShortVersionString'];
         }
+
         if (bundleVersion) {
             core.info(`Overriding CFBundleVersion: ${bundleVersion}`);
             obj['CFBundleVersion'] = bundleVersion;
+        } else {
+            bundleVersion = obj['CFBundleVersion'];
+        }
+
+        if (bundleDisplayName) {
+            core.info(`Overriding CFBundleDisplayName: ${bundleDisplayName}`);
+            obj['CFBundleDisplayName'] = bundleDisplayName;
+        }
+
+        if (appId) {
+            core.info(`Overriding CFBundleIdentifier: ${appId}`);
+            obj['CFBundleIdentifier'] = appId;
         }
 
         fs.chmodSync(infoPlistPath, "600");
@@ -47,7 +65,9 @@ async function main(): Promise<void> {
             await exec.exec('cat', [infoPlistPath]);
         }
 
+        fullVersionName = `v${bundleShortVersionString}(${bundleVersion})`
         core.info(`Info.plist updated successfully`);
+        core.exportVariable('FULL_VERSION_NAME', fullVersionName);
     } catch (error) {
         if (error instanceof Error) {
             core.setFailed(error.message);

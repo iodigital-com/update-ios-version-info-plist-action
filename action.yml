@@ -7,10 +7,16 @@ inputs:
     required: true
   bundle-short-version-string:
     description: 'CF Bundle Short Version String'
-    required: true
+    required: false
   bundle-version:
     description: 'CF Bundle Version'
     required: true
+  app-id:
+    description: 'App id'
+    required: false
+  bundle-display-name:
+    description: 'Bundle display name'
+    required: false
   print-file:
     description: 'Output the Info.plist file in console'
     required: false

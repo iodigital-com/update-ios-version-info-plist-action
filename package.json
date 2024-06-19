@@ -1,7 +1,7 @@
 {
   "name": "update-ios-version-info-plist-action",
-  "version": "1.0.0",
-  "description": "Update iOS version Info.plist",
+  "version": "1.1.0",
+  "description": "Update iOS Info.plist",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
