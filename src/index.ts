@@ -22,6 +22,11 @@ async function main(): Promise<void> {
         let bundleVersion: string = core.getInput('bundle-version');
         let appId: string = core.getInput('app-id');
         let bundleDisplayName: string = core.getInput('bundle-display-name');
+        let bundleUrlTypes: string = core.getInput('bundle-url-types');
+        let branchKeyLive: string = core.getInput('branch-key-live');
+        let branchKeyTest: string = core.getInput('branch-key-test');
+        let branchUniversalLinkDomains: string = core.getInput('branch-universal-link-domains');
+
         let fullVersionName: string = "";
 
         if (printFile) {
@@ -55,6 +60,35 @@ async function main(): Promise<void> {
         if (appId) {
             core.info(`Overriding CFBundleIdentifier: ${appId}`);
             obj['CFBundleIdentifier'] = appId;
+        }
+
+        if(bundleUrlTypes){
+            core.info(`Overriding CFBundleURLTypes: ${bundleUrlTypes}`);
+            obj['CFBundleURLTypes'] = [
+                {
+                    'CFBundleTypeRole': 'Editor',
+                    'CFBundleURLName': appId ? appId : '',
+                    'CFBundleURLSchemes': [
+                        bundleUrlTypes
+                    ]
+                }
+            ];
+        }
+
+        if(branchKeyLive) {
+            obj['branch_key']['live'] = branchKeyLive
+        }
+
+        if(branchKeyTest) {
+            obj['branch_key']['test'] = branchKeyTest
+        }
+
+        if(branchUniversalLinkDomains) {
+            obj['branch_universal_link_domains'] = {
+                'Item 0': `${branchUniversalLinkDomains}.app.link`,
+                'Item 1': `${branchUniversalLinkDomains}-alternate.app.link`,
+                'Item 2': `${branchUniversalLinkDomains}.test-app.link`,
+            }
         }
 
         fs.chmodSync(infoPlistPath, "600");
