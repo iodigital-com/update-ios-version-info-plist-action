@@ -20,6 +20,19 @@ inputs:
   print-file:
     description: 'Output the Info.plist file in console'
     required: false
+  bundle-url-types:
+    description: 'App scheme'
+    required: false
+  branch-key-live:
+    description: 'Branch key'
+    required: false
+  branch-key-test: 
+    description: 'Branch test key'
+    required: false
+  branch-universal-link-domains:
+    description: 'Branch universal link subdomain'
+    required: false
+
 runs:
   using: 'node20'
   main: 'dist/index.js'
